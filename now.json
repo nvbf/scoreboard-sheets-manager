@@ -4,6 +4,6 @@
     "NODE_ENV": "production",
     "GS_ACCESS_TOKEN": "@google-sheet-access-token",
     "GS_REFRESH_TOKEN": "@google-sheet-refresh-token",
-    "GS_EXPIRE_DATE": "@google-sheet-expire-date"
+    "GS_EXPIRE_DATE": "@google-sheet-expiry-date"
   }
 }
