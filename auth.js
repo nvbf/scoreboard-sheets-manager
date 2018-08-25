@@ -7,11 +7,23 @@ const SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"];
 const TOKEN_PATH = "token.json";
 
 function run(callback) {
-  fs.readFile("credentials.json", (err, content) => {
-    if (err) return reject(err);
-    // Authorize a client with credentials, then call the Google Sheets API.
+  if (fs.existsSync("credentials.json")) {
+    fs.readFile("credentials.json", (err, content) => {
+      if (err) return reject(err);
+      // Authorize a client with credentials, then call the Google Sheets API.
+      authorize(JSON.parse(content), callback);
+    });
+  } else {
+    const content = {
+      access_token: process.env.GS_ACCESS_TOKEN,
+      refresh_token: process.env.GS_REFRESH_TOKEN,
+      scope: "https://www.googleapis.com/auth/spreadsheets.readonly",
+      token_type: "Bearer",
+      expiry_date: process.env.GS_EXPIRE_DATE
+    };
+
     authorize(JSON.parse(content), callback);
-  });
+  }
 }
 /**
  * Create an OAuth2 client with the given credentials, and then execute the

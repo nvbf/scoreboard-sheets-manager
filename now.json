@@ -1,6 +1,11 @@
 {
   "name": "scoreboard-sheets-manager",
   "env": {
-    "NODE_ENV": "production"
+    "NODE_ENV": "production",
+    "env": {
+      "GS_ACCESS_TOKEN ": "@google-sheet-access-token",
+      "GS_REFRESH_TOKEN ": "@google-sheet-refresh-token",
+      "GS_EXPIRE_DATE ": "@google-sheet-expire-date"
+    }
   }
 }
