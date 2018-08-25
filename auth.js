@@ -22,7 +22,7 @@ function run(callback) {
       expiry_date: process.env.GS_EXPIRE_DATE
     };
 
-    authorize(JSON.parse(content), callback);
+    authorize(content, callback);
   }
 }
 /**

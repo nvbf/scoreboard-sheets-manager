@@ -1,6 +1,7 @@
 {
   "name": "scoreboard-sheets-manager",
   "env": {
+    "DEBUG": "*,-express,-babel",
     "NODE_ENV": "production",
     "GS_ACCESS_TOKEN": "@google-sheet-access-token",
     "GS_REFRESH_TOKEN": "@google-sheet-refresh-token",
