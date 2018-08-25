@@ -4,6 +4,7 @@
   "description": "a tool between google sheets and volleyscore that lets you manage wich match you show",
   "main": "index.js",
   "scripts": {
+    "build": "next build",
     "test": "npm test"
   },
   "keywords": [
