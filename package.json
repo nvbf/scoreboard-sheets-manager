@@ -1,0 +1,28 @@
+{
+  "name": "scoreboard-sheets-manager",
+  "version": "1.0.0",
+  "description": "a tool between google sheets and volleyscore that lets you manage wich match you show",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "keywords": [
+    "google-sheets",
+    "beachvolleyball",
+    "volleyscore"
+  ],
+  "author": "Sindre Øye Svendby",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "debug": "^3.1.0",
+    "express": "^4.16.3",
+    "googleapis": "^33.0.0",
+    "isomorphic-unfetch": "^2.1.1",
+    "next": "^6.1.1",
+    "path-match": "^1.2.4",
+    "query-string": "^6.1.0",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2"
+  }
+}
