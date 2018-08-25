@@ -1,0 +1,6 @@
+{
+  "name": "scoreboard-sheets-manager",
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
