@@ -1,55 +1,70 @@
 import React from "react";
 import qs from "query-string";
 import { getJson } from "../getJson";
+
 export default class Court extends React.Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   courtId: "",
-    //   sheetId: "",
-    //   spreadsheetId: "",
-    //   type: "",
-    //   homeColor: "",
-    //   awayColor: "",
-    //   tournamentId: "",
-    //   matchId: ""
-    // };
+    this.state = {
+      courtId: "",
+      sheetId: "",
+      spreadsheetId: "",
+      type: "",
+      homeColor: "",
+      awayColor: "",
+      tournamentId: -1,
+      matchId: -1
+    };
   }
 
-  static async getInitialProps({ query, isServer }) {
+  async componentDidMount() {
     const {
-      courtId,
-      spreadsheetId,
-      type,
+      courtId = "",
+      spreadsheetId = "",
+      type = "",
       homeColor = "",
       awayColor = ""
-    } = query;
+    } = qs.parse(window.location.search);
+    console.log(courtId);
+    console.log(spreadsheetId);
+    let mId = -1;
+    let tId = -1;
+    if (spreadsheetId && courtId) {
+      const { matchId, tournamentId } = await getJson(
+        `/api/court/${spreadsheetId}/${courtId}`
+      );
+      mId = matchId;
+      tId = tournamentId;
+    }
 
-    const { matchId, tournamentId } = getJson(
-      `/api/court/${spreadsheetId}/${courtId}`
-    );
-    return {
-      matchId,
-      tournamentId,
+    this.setState({
+      matchId: mId,
+      tournamentId: tId,
       courtId,
       spreadsheetId,
       type,
       homeColor,
       awayColor
+    });
+
+    // reload every 5 min instead of implementing update logic
+    const loadAfter5 = () => {
+      window.location = window.location;
     };
+    setTimeout(loadAfter5, 60 * 5 * 1000);
   }
 
-  componentDidMount() {
-    // reload every 5 min instead of implementing update logic
-    setTimeout(() => (window.location = window.location), 60 * 5 * 1000);
-  }
   render() {
-    const { matchId, tournamentId, type } = this.props;
+    const { matchId, tournamentId, type } = this.state;
+    console.log(matchId, tournamentId);
     if (matchId == -1 || tournamentId == -1) {
       return (
         <p> Ser ut som noe gikk dårlig, stemmer court og spreadsheetId ? </p>
       );
     }
+    console.log(
+      `Lets show: http://score.volleystream.no/${type}?tournament=${tournamentId}&match=${matchId}`
+    );
     return (
       <React.Fragment>
         <style dangerouslySetInnerHTML={{ __html: styles }} />

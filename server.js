@@ -26,9 +26,6 @@ app.prepare().then(() => {
     return res.json({ matchId, tournamentId });
   });
 
-  // Server-side
-  const route = pathMatch();
-
   server.get("*", (req, res) => {
     return handle(req, res);
   });
