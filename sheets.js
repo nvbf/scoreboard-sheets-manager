@@ -65,7 +65,6 @@ const getMatchNr = async (spreadsheetId, courtId) => {
       match = matchInPlay;
     }
     if (match && match[0] && match[0][0]) {
-      console.log(`matchId ${rows[0][0]}`);
       return match[0][0];
     } else {
       console.log(`Tom, match er tom ${match}`);
@@ -80,7 +79,6 @@ const getTournamentId = async spreadsheetId => {
   try {
     const result = await getspreadsheetIdArea(spreadsheetId, "Config!D2");
     const rows = result.data.values;
-    console.log(`TurneringsId ${rows[0][0]}`);
     return rows[0][0];
   } catch (err) {
     console.log(err);

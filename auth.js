@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const fs = require("fs");
 const readline = require("readline");
 const { google } = require("googleapis");
@@ -6,23 +8,41 @@ const { google } = require("googleapis");
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"];
 const TOKEN_PATH = "token.json";
 
+const credentials = {
+  installed: {
+    client_id: process.env.GS_CLIENT_ID,
+    project_id: process.env.GS_PROJECT_ID,
+    auth_uri: "https://accounts.google.com/o/oauth2/auth",
+    token_uri: "https://www.googleapis.com/oauth2/v3/token",
+    auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
+    client_secret: process.env.GS_CLIENT_SECRET,
+    redirect_uris: ["urn:ietf:wg:oauth:2.0:oob", "http://localhost"]
+  }
+};
+
+const token = {
+  access_token: process.env.GS_ACCESS_TOKEN,
+  refresh_token: process.env.GS_REFRESH_TOKEN,
+  scope: "https://www.googleapis.com/auth/spreadsheets.readonly",
+  token_type: "Bearer",
+  expiry_date: process.env.GS_EXPIRE_DATE
+};
+
+console.log(`token: ${JSON.stringify(token)}`);
+
 function run(callback) {
+  // console.log(`credentials: ${JSON.stringify(credentials)}`);
+  // console.log(`token: ${JSON.stringify(token)}`);
   if (fs.existsSync("credentials.json")) {
+    console.log("credentials file exist ");
     fs.readFile("credentials.json", (err, content) => {
       if (err) return reject(err);
       // Authorize a client with credentials, then call the Google Sheets API.
       authorize(JSON.parse(content), callback);
     });
   } else {
-    const content = {
-      access_token: process.env.GS_ACCESS_TOKEN,
-      refresh_token: process.env.GS_REFRESH_TOKEN,
-      scope: "https://www.googleapis.com/auth/spreadsheets.readonly",
-      token_type: "Bearer",
-      expiry_date: process.env.GS_EXPIRE_DATE
-    };
-
-    authorize(content, callback);
+    console.log("credentials.json is not here, fallback to env.var");
+    authorize(credentials, callback);
   }
 }
 /**
@@ -40,11 +60,17 @@ function authorize(credentials, callback) {
   );
 
   // Check if we have previously stored a token.
-  fs.readFile(TOKEN_PATH, (err, token) => {
-    if (err) return getNewToken(oAuth2Client, callback);
-    oAuth2Client.setCredentials(JSON.parse(token));
+  if (fs.existsSync(TOKEN_PATH)) {
+    fs.readFile(TOKEN_PATH, (err, token) => {
+      if (err) return getNewToken(oAuth2Client, callback);
+      oAuth2Client.setCredentials(JSON.parse(token));
+      callback(oAuth2Client);
+    });
+  } else {
+    console.log("token  file do not exist, using env var ");
+    oAuth2Client.setCredentials(token);
     callback(oAuth2Client);
-  });
+  }
 }
 
 /**

@@ -22,7 +22,7 @@ app.prepare().then(() => {
     const matchId = await getMatchNr(spreadsheetId, courtId);
     console.log(`matchId: ${matchId}`);
     const tournamentId = await getTournamentId(spreadsheetId);
-    console.log(`tournamentId: ${tournamentId}`);
+    console.log(`tournamentId: ${tournamentId}, matchId: ${matchId}`);
     return res.json({ matchId, tournamentId });
   });
 

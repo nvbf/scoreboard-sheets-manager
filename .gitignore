@@ -1,3 +1,6 @@
 token.json
 credentials.json
 .next
+credentials*.json
+token*.json
+.env 

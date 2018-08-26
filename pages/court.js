@@ -13,7 +13,8 @@ export default class Court extends React.Component {
       homeColor: "",
       awayColor: "",
       tournamentId: -1,
-      matchId: -1
+      matchId: -1,
+      loading: true
     };
   }
 
@@ -44,7 +45,8 @@ export default class Court extends React.Component {
       spreadsheetId,
       type,
       homeColor,
-      awayColor
+      awayColor,
+      loading: false
     });
 
     // reload every 5 min instead of implementing update logic
@@ -55,8 +57,12 @@ export default class Court extends React.Component {
   }
 
   render() {
-    const { matchId, tournamentId, type } = this.state;
+    const { matchId, tournamentId, type, loading } = this.state;
     console.log(matchId, tournamentId);
+
+    if (loading) {
+      return <div />;
+    }
     if (matchId == -1 || tournamentId == -1) {
       return (
         <p> Ser ut som noe gikk dårlig, stemmer court og spreadsheetId ? </p>
@@ -85,5 +91,5 @@ export default class Court extends React.Component {
 const styles = `
   #wrap { width: 600px; height: 390px; padding: 0; overflow: hidden; }
   #frame { width: 800px; height: 520px; border: 1px solid black; }
-  #frame { zoom: 0.75; -moz-transform: scale(0.75); -moz-transform-origin: 0 0; }
+  #frame { zoom: 0.75; -moz-transform: scale(0.75); -moz-transform-origin: 0 0; border-style: none;}
 `;
